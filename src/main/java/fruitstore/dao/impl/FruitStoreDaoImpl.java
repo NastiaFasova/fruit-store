@@ -3,7 +3,6 @@ package fruitstore.dao.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fruitstore.dao.FruitStoreDao;
 import fruitstore.lib.Dao;
-import fruitstore.lib.Inject;
 import fruitstore.model.Fruit;
 import fruitstore.model.FruitStore;
 import fruitstore.model.Order;
@@ -22,7 +21,6 @@ import org.json.simple.parser.ParseException;
 @Dao
 public class FruitStoreDaoImpl implements FruitStoreDao {
 
-    @Inject
     private final FruitStore fruitStore = new FruitStore();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -35,7 +33,8 @@ public class FruitStoreDaoImpl implements FruitStoreDao {
             file.write(obj.toJSONString());
             file.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("The problem of writing the list of "
+                    + "delivered fruits into the file occurred" + e);
         }
     }
 
@@ -49,7 +48,8 @@ public class FruitStoreDaoImpl implements FruitStoreDao {
             file.write(obj.toJSONString());
             file.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("The problem of writing the list of all"
+                    + "fruits into the file occurred" + e);
         }
     }
 
@@ -82,7 +82,8 @@ public class FruitStoreDaoImpl implements FruitStoreDao {
             fruitStore.setFruits(fruits);
             fruitStore.setMoneyBalance(moneyBalance);
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException("The problem of loading the list of all"
+                    + "fruits from the file occurred" + e);
         }
     }
 
@@ -151,7 +152,8 @@ public class FruitStoreDaoImpl implements FruitStoreDao {
             file.write(obj.toJSONString());
             file.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("The problem of writing the list of all"
+                    + "orders into the file occurred" + e);
         }
     }
 
@@ -194,7 +196,7 @@ public class FruitStoreDaoImpl implements FruitStoreDao {
             fruitStore.setOrders(orders);
             return orders;
         } catch (IOException | ParseException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("The problem of retrieving the orders occurred", e);
         }
     }
 
